@@ -11,10 +11,10 @@ export default function Home() {
 
   return (
     <div className="p-8 text-white">
-    <div className="flex justify-between border-b pb-4">
-      <span className="text-xl font-bold">Isotope</span>
-      <span className="">Logged in as {accounts[0]}</span>
-    </div>
+      <div className="flex justify-between border-b pb-4">
+        <span className="text-xl font-bold">Isotope</span>
+        <span className="">Logged in as {accounts[0]}</span>
+      </div>
     </div>
   )
 }
