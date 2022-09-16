@@ -1,5 +1,6 @@
 import Router from "next/router"
 import { useEffect } from "react"
+import Contacts from "../components/Contacts"
 import { useAccounts } from "../hooks/zustand"
 
 export default function Home() {
@@ -10,10 +11,13 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="p-8 text-white">
-      <div className="flex justify-between border-b pb-4">
+    <div className="p-8 text-white h-screen">
+      <div className="flex justify-between border-b pb-4 mb-4">
         <span className="text-xl font-bold">Isotope</span>
         <span className="">Logged in as {accounts[0]}</span>
+      </div>
+      <div className="grid grid-cols-5">
+        <div className="col-span-1 cursor-pointer"><Contacts /></div>
       </div>
     </div>
   )
