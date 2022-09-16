@@ -1,5 +1,6 @@
 import Router from "next/router"
 import { useEffect } from "react"
+import ChatArea from "../components/ChatArea"
 import Contacts from "../components/Contacts"
 import { useAccounts } from "../hooks/zustand"
 
@@ -18,6 +19,7 @@ export default function Home() {
       </div>
       <div className="grid grid-cols-5">
         <div className="col-span-1 cursor-pointer"><Contacts /></div>
+        <div className="col-span-4 cursor-pointer"><ChatArea /></div>
       </div>
     </div>
   )
