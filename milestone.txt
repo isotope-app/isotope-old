@@ -1,0 +1,12 @@
+Room creation process:
+The user inputs an desired name for the chatroom, and then the system will
+hash it and use the digest to create a ipfs pubsub channel.
+
+Encryption/decription process:
+when someone joins a chatroom, the server fetches that user's public key
+on a keyserver, such as https://keys.openpgp.org/ and when someone sends a message,
+the system first signs the message using the sender's public key, and then
+encrypts the user's message using everyone's public key, generating a different message
+for everyone, and sends it to everyone in the room.
+After that, everyone in the chat room can decrypt the system using their own private key, and
+verify the sender by using the sender's public key to verify the message is signed.
