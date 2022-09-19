@@ -17,9 +17,9 @@ export default function Home() {
         <span className="text-xl font-bold">Isotope</span>
         <span className="">Logged in as {accounts[0]}</span>
       </div>
-      <div className="grid grid-cols-5">
-        <div className="col-span-1 cursor-pointer"><Contacts /></div>
-        <div className="col-span-4 cursor-pointer"><ChatArea /></div>
+      <div className="grid grid-cols-5 gap-8">
+        <div className="col-span-1"><Contacts /></div>
+        <div className="col-span-4"><ChatArea /></div>
       </div>
     </div>
   )
