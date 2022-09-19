@@ -9,7 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!accounts[0]) Router.push('/signin?reason=no_address')
-  }, [])
+  }, [accounts])
 
   return (
     <div className="p-8 text-white h-screen">
