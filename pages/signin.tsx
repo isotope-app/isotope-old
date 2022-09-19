@@ -34,7 +34,7 @@ export default function Signin() {
         <h3 className='text-center text-2xl font-semibold'>Sign in to Isotope</h3>
         <hr className='m-8 w-3/4' />
         <div className='flex items-center bg-white rounded-md cursor-pointer' onClick={metamaskLogin}>
-          <div className='relative w-10 h-10 px-8'><Image src={metamaskIcon} layout='fill' objectFit='contain' /></div>
+          <div className='relative w-10 h-10 px-8'><Image src={metamaskIcon} layout='fill' objectFit='contain' alt='metamask icon' /></div>
           <span className='rounded-r-md font-bold text-xl text-[#ffffff] bg-[#f6851b] py-4 px-4'>Continue using MetaMask</span>
         </div>
       </div>

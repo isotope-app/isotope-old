@@ -20,6 +20,7 @@ export default function Contacts() {
     const sessionContacts = window.sessionStorage.getItem('contacts');
     if (!sessionContacts) return;
     contacts.setSelected(JSON.parse(sessionContacts));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
