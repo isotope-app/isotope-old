@@ -5,12 +5,12 @@ interface Accounts {
   setAccounts: (accounts: string[]) => void,
 }
 
-interface Contacts {
-  addresses: string[],
+interface ChatRooms {
+  rooms: string[],
   selected: string,
-  setAddresses: (addresses: string[]) => void,
-  addAddresses: (addresses: string) => void,
-  removeAddress: (addresses: string) => void,
+  setRooms: (rooms: string[]) => void,
+  addRoom: (room: string) => void,
+  removeRoom: (room: string) => void,
   setSelected: (selected: string) => void,
 }
 
@@ -19,13 +19,13 @@ const useAccounts = create<Accounts>((set) => ({
   setAccounts: (accounts) => set(() => ({ accounts })),
 }))
 
-const useContacts = create<Contacts>((set) => ({
-  addresses: [],
+const useChatRooms = create<ChatRooms>((set) => ({
+  rooms: [],
   selected: undefined,
-  setAddresses: (addresses: string[]) => set(() => ({ addresses })),
-  addAddresses: (address: string) => set((state) => ({ addresses: [address, ...state.addresses] })),
-  removeAddress: (address: string) => set((state) => ({ addresses: state.addresses.filter((a) => a !== address )})),
+  setRooms: (rooms: string[]) => set(() => ({ rooms })),
+  addRoom: (room: string) => set((state) => ({ rooms: [room, ...state.rooms] })),
+  removeRoom: (room: string) => set((state) => ({ rooms: state.rooms.filter((r) => r !== room )})),
   setSelected: (selected: string) => set(() => ({ selected }))
 }))
 
-export { useAccounts, useContacts };
+export { useAccounts, useChatRooms };

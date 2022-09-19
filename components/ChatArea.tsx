@@ -1,18 +1,18 @@
-import { useContacts } from "../hooks/zustand";
+import { useChatRooms } from "../hooks/zustand";
 
 export default function ChatArea() {
-  const selectedContacts = useContacts((state) => state.selected)
+  const chatRooms = useChatRooms((state) => state.selected)
 
-  if (!selectedContacts) return (
+  if (!chatRooms) return (
     <div>
       <h3 className="text-center m-4 text-2xl font-medium">Welcome to Isotope.</h3>
-      <p className="text-center">Add or select a person in your contacts to start talking.</p>
+      <p className="text-center">Create or join a chatroom to start.</p>
     </div>
   )
 
   return (
     <div className="h-full">
-      <h3 className="text-2xl font-medium">{selectedContacts}</h3>
+      <h3 className="text-2xl font-medium">{chatRooms}</h3>
       <hr className="m-2" />
     </div>
   );

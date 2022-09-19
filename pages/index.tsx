@@ -1,7 +1,7 @@
 import Router from "next/router"
 import { useEffect } from "react"
 import ChatArea from "../components/ChatArea"
-import Contacts from "../components/Contacts"
+import ChatRooms from "../components/ChatRooms"
 import { useAccounts } from "../hooks/zustand"
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
         <span className="">Logged in as {accounts[0]}</span>
       </div>
       <div className="grid grid-cols-5 gap-8">
-        <div className="col-span-1"><Contacts /></div>
+        <div className="col-span-1"><ChatRooms /></div>
         <div className="col-span-4"><ChatArea /></div>
       </div>
     </div>
