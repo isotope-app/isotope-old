@@ -1,7 +1,17 @@
-import { useChatRooms } from "../hooks/zustand";
+import { useChatRooms, useIPFS } from "../hooks/zustand";
+import { useState } from "react";
 
 export default function ChatArea() {
+  const ipfs = useIPFS((state) => state.ipfs);
   const chatRooms = useChatRooms((state) => state.selected)
+
+
+  if (!ipfs) return (
+    <div>
+      <h3 className="text-center m-4 text-2xl font-medium">Please wait...</h3>
+      <p className="text-center">IPFS is loading</p>
+    </div>
+  )
 
   if (!chatRooms) return (
     <div>

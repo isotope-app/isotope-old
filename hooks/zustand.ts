@@ -1,3 +1,4 @@
+import { IPFS } from 'ipfs-core-types';
 import create from 'zustand'
 
 interface Accounts {
@@ -14,6 +15,10 @@ interface ChatRooms {
   setSelected: (selected: string) => void,
 }
 
+interface IPFSNode {
+  ipfs: IPFS | undefined,
+}
+
 const useAccounts = create<Accounts>((set) => ({
   accounts: [],
   setAccounts: (accounts) => set(() => ({ accounts })),
@@ -28,4 +33,8 @@ const useChatRooms = create<ChatRooms>((set) => ({
   setSelected: (selected: string) => set(() => ({ selected }))
 }))
 
-export { useAccounts, useChatRooms };
+const useIPFS = create<IPFSNode>((set) => ({
+  ipfs: undefined,
+}))
+
+export { useAccounts, useChatRooms, useIPFS };
