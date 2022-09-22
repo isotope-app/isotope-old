@@ -1,4 +1,4 @@
-import { IPFS } from 'ipfs-core-types';
+import type { IPFSHTTPClient } from 'ipfs-http-client/dist/src/types';
 import create from 'zustand'
 
 interface Accounts {
@@ -16,7 +16,8 @@ interface ChatRooms {
 }
 
 interface IPFSNode {
-  ipfs: IPFS | undefined,
+  ipfs: IPFSHTTPClient | undefined,
+  setIPFS: (ipfs: IPFSHTTPClient) => void,
 }
 
 const useAccounts = create<Accounts>((set) => ({
@@ -35,6 +36,7 @@ const useChatRooms = create<ChatRooms>((set) => ({
 
 const useIPFS = create<IPFSNode>((set) => ({
   ipfs: undefined,
+  setIPFS: (ipfs: IPFSHTTPClient) => set(() => ({ ipfs }))
 }))
 
 export { useAccounts, useChatRooms, useIPFS };

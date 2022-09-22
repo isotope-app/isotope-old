@@ -2,7 +2,7 @@ import Router from "next/router"
 import { useEffect } from "react"
 import ChatArea from "../components/ChatArea"
 import ChatRooms from "../components/ChatRooms"
-import * as IPFS from "ipfs-core";
+import { create } from 'ipfs-http-client'
 import { useAccounts, useIPFS } from "../hooks/zustand"
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!accounts[0]) return;
-    IPFS.create().then((node) => useIPFS.setState({ ipfs: node }))
+    useIPFS.setState({ ipfs: create() })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
