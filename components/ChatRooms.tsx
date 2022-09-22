@@ -9,7 +9,7 @@ export default function ChatRooms() {
   const addChatRoom = () => {
     if (!inputRef || !inputRef.current.value) return;
     if (!chatRooms) {
-      chatRooms.setRooms([inputRef.current.value])
+      useChatRooms.setState({ rooms: [inputRef.current.value] })
     } else {
       if (chatRooms.rooms.includes(inputRef.current.value)) return;
       chatRooms.addRoom(inputRef.current.value);
@@ -19,7 +19,7 @@ export default function ChatRooms() {
   useEffect(() => {
     const sessionChatRooms = window.localStorage.getItem('chatrooms');
     if (!sessionChatRooms) return;
-    chatRooms.setRooms(JSON.parse(sessionChatRooms));
+    useChatRooms.setState({ rooms: JSON.parse(sessionChatRooms) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -34,7 +34,7 @@ export default function ChatRooms() {
         <div className='flex justify-between items-center' key={`room-${a}`}>
           <span>{a}</span>
           <div className="flex">
-            <div className='p-2'><HiOutlineChatAlt2 className='w-5 h-5 cursor-pointer' onClick={() => chatRooms.setSelected(a)} /></div>
+            <div className='p-2'><HiOutlineChatAlt2 className='w-5 h-5 cursor-pointer' onClick={() => useChatRooms.setState({ selected: a })} /></div>
             <div className='p-2'><HiUserRemove className='w-5 h-5 cursor-pointer' onClick={() => { chatRooms.removeRoom(a) }} /></div>
           </div>
         </div>
