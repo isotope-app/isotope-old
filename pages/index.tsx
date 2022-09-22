@@ -14,7 +14,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!accounts[0]) return;
-    useIPFS.setState({ ipfs: create({ url: "http://127.0.0.1:5002/" }) })
+    useIPFS.setState({ ipfs: create({ url: useIPFS.getState().apiAddr }) })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
