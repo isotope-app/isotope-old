@@ -24,7 +24,7 @@ export default function Home() {
         <span className="text-xl font-bold">Isotope</span>
         <span className="">Logged in as {accounts[0]}</span>
       </div>
-      <div className="grid grid-cols-6 gap-8">
+      <div className="grid grid-cols-5 gap-8">
         <div className="col-span-1"><ChatRooms /></div>
         <div className="col-span-4"><ChatArea /></div>
       </div>

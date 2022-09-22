@@ -1,24 +1,14 @@
-import { useChatRooms, useIPFS } from "../hooks/zustand";
-import { useState } from "react";
+import { useAccounts, useChatRooms, useIPFS } from "../hooks/zustand";
+import BlankSlate from "./Blankslate";
 
 export default function ChatArea() {
   const ipfs = useIPFS((state) => state.ipfs);
   const chatRooms = useChatRooms((state) => state.selected)
+  const accounts = useAccounts((state) => state.accounts);
 
-
-  if (!ipfs) return (
-    <div>
-      <h3 className="text-center m-4 text-2xl font-medium">Please wait...</h3>
-      <p className="text-center">IPFS is loading</p>
-    </div>
-  )
-
-  if (!chatRooms) return (
-    <div>
-      <h3 className="text-center m-4 text-2xl font-medium">Welcome to Isotope.</h3>
-      <p className="text-center">Create or join a chatroom to start.</p>
-    </div>
-  )
+  if (!accounts) return ( <BlankSlate title="Not logged in." body="Redirecting to sign in page..." /> )
+  if (!ipfs) return ( <BlankSlate title="IPFS is loading" body="Please wait..." /> )
+  if (!chatRooms) return ( <BlankSlate title="Welcome to Isotope." body="Create or join a chat room to start." />)
 
   return (
     <div className="h-full">
