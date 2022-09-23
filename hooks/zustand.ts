@@ -1,21 +1,5 @@
-import type { IPFSHTTPClient } from 'ipfs-http-client/dist/src/types';
 import create from 'zustand'
-
-interface Accounts {
-  accounts: string[],
-}
-
-interface ChatRooms {
-  rooms: string[],
-  selected: string,
-  addRoom: (room: string) => void,
-  removeRoom: (room: string) => void,
-}
-
-interface IPFSNode {
-  ipfs: IPFSHTTPClient | undefined,
-  apiAddr: string,
-}
+import { Accounts, ChatRooms, IPFSNode } from '../types/states';
 
 const useAccounts = create<Accounts>((set) => ({
   accounts: [],
