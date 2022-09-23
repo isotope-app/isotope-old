@@ -9,12 +9,12 @@ export default function ChatArea() {
   const selectedChat = useChatRooms((state) => state.selected)
   const accounts = useAccounts((state) => state.accounts);
   const [subscribeStatus, setSubscribeStatus] = useState<boolean | Error>(false);
+  const [messages, setMessages] = useState<string[]>([]);
 
-  const decodeMsg = (msg: Message) => console.log(new TextDecoder().decode(msg.data))
 
   useEffect(() => {
     if (!ipfs || !selectedChat) return;
-    ipfs.pubsub.subscribe(selectedChat, decodeMsg)
+    ipfs.pubsub.subscribe(selectedChat, (msg: Message) => setMessages([...messages, new TextDecoder().decode(msg.data)]))
       .then(() => setSubscribeStatus(true))
       .catch((e: any) => {
         setSubscribeStatus((e as Error));
@@ -27,6 +27,7 @@ export default function ChatArea() {
           </div>
         );
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipfs, selectedChat])
 
   if (accounts.length === 0) return (<BlankSlate title="Not logged in." body="Redirecting to sign in page..." />)
@@ -38,6 +39,9 @@ export default function ChatArea() {
   return (
     <div className="h-full">
       <h3 className="text-2xl font-medium text-center">{selectedChat}</h3>
+      {messages.map((m) => (
+        <span key={`message-${Date.now()}`}>{m} {Intl.DateTimeFormat(navigator.language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date())}</span>
+      ))}
     </div>
   );
 }
