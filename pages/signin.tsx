@@ -29,7 +29,12 @@ export default function Signin() {
 
   if (!provider) return;
 
-  if (Router.query.reason === 'no_address') toast.error('Sign in first to continue.');
+  if (Router.query.reason === 'no_address') toast.error(
+    <div>
+      <span>Sign in to continue.</span> <br />
+      <span className="text-zinc-600" >{Intl.DateTimeFormat(navigator.language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date())}</span>
+    </div>
+  );
 
   return (
     <div className='mx-auto max-w-screen-md flex flex-col justify-center items-center border-white border rounded-lg p-8 w-full'>

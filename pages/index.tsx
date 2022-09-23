@@ -28,7 +28,7 @@ export default function Home() {
           <HiCog className="cursor-pointer w-5 h-5 mx-3" onClick={() => { Router.push('/config') }} />
         </div>
       </div>
-      <hr className="my-4 border-none outline" />
+      <hr className="my-4" />
       <div className="grid grid-cols-5 gap-8">
         <div className="col-span-1"><ChatRooms /></div>
         <div className="col-span-4"><ChatArea /></div>
