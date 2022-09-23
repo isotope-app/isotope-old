@@ -14,6 +14,7 @@ export default function ChatRooms() {
       if (chatRooms.rooms.includes(inputRef.current.value)) return;
       chatRooms.addRoom(inputRef.current.value);
     }
+    inputRef.current.value = "";
   }
 
   useEffect(() => {
