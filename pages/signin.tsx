@@ -1,33 +1,23 @@
 import Image from 'next/image';
 import metamaskIcon from '../public/metamask-fox.svg'
-import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
 import { useAccounts } from '../hooks/zustand';
 import Router from 'next/router';
 import { toast } from 'react-toastify';
 
 export default function Signin() {
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider | undefined | Error>(undefined);
+  const ethereum = (window as any).ethereum;
 
   const metamaskLogin = () => {
-    if (provider instanceof Error) {
+    if (!ethereum) {
       toast.error('Could not detect metamask.')
       return;
     }
-    provider.send('eth_requestAccounts', [])
-      .then(() => provider.send('eth_accounts', []))
-      .then((accounts) => { useAccounts.setState({ accounts }) })
+    ethereum.request({method: 'eth_requestAccounts', })
+      .then(() => ethereum.request({method: 'eth_accounts'}))
+      .then((accounts: string[]) => { useAccounts.setState({ accounts }) })
       .then(() => Router.push('/'))
       .catch((e: any) => toast.error(e.toString()))
   }
-
-  useEffect(() => {
-    try {
-      setProvider(new ethers.providers.Web3Provider((window as any).ethereum));
-    } catch (e) { setProvider(e); }
-  }, []);
-
-  if (!provider) return;
 
   if (Router.query.reason === 'no_address') toast.error(
     <div>

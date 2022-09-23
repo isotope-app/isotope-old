@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ethers": "^5.7.1",
     "ipfs-http-client": "^58.0.1",
     "next": "12.3.0",
     "react": "18.2.0",
