@@ -19,6 +19,13 @@ export default function ChatArea() {
       .catch((e: any) => {
         setSubscribeStatus((e as Error));
         console.error(e);
+        toast.error(
+          <div>
+            <span>Failed to subscribe to topic.</span> <br />
+            <span>Is the <i className="italic">ipfs-http-server</i> running?</span> <br />
+            <span className="text-zinc-600" >{Intl.DateTimeFormat(navigator.language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date())}</span>
+          </div>
+        );
       })
   }, [ipfs, selectedChat])
 
