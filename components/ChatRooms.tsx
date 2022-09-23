@@ -30,7 +30,7 @@ export default function ChatRooms() {
   }, [chatRooms]);
 
   return (
-    <div className='flex flex-col justify-between h-full'>
+    <div className='flex flex-col justify-between h-min'>
       {!chatRooms ? (<span>There are no rooms.</span>) : chatRooms.rooms.map((a) => (
         <div className={`px-4 flex justify-between items-center ${chatRooms.selected === a ? 'bg-zinc-800 border-l-4' : 'bg-inherit border-none'}`} key={`room-${a}`}>
           <span>{a}</span>
@@ -40,11 +40,9 @@ export default function ChatRooms() {
           </div>
         </div>
       ))}
-      <div className='flex items-center justify-between'>
-        <input className='bg-black caret-white outline-none p-2 border-b' placeholder='Room name' ref={inputRef}></input>
-        <div className='p-4' onClick={addChatRoom}>
-          <HiUserAdd className='w-5 h-5 cursor-pointer' />
-        </div>
+      <div className="flex items-center">
+        <input className='inline bg-black caret-white outline-none p-2 border-b w-full' placeholder='Room name' ref={inputRef}></input>
+        <HiUserAdd className='inline w-5 h-5 m-2 cursor-pointer' onClick={addChatRoom} />
       </div>
     </div>
   )

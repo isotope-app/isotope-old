@@ -45,18 +45,20 @@ export default function ChatArea() {
   if (subscribeStatus instanceof Error) return (<BlankSlate title="Failed to subscribe to topic" body="Check the console for details." />)
 
   return (
-    <div className="h-full">
-      <h3 className="text-2xl font-medium text-center">{selectedChat}</h3>
-      <div className="flex flex-col">
-        {messages.map((m, index) => (
-          <span key={`message-${index}`}>
-            {m} {Intl.DateTimeFormat(navigator.language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date())}
-          </span>
-        ))}
+    <div className="h-full flex flex-col justify-between">
+      <div>
+        <h3 className="text-2xl font-medium text-center">{selectedChat}</h3>
+        <div className="flex flex-col">
+          {messages.map((m, index) => (
+            <span key={`message-${index}`}>
+              {m} {Intl.DateTimeFormat(navigator.language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date())}
+            </span>
+          ))}
+        </div>
       </div>
       <div className="outline">
         <input
-          className="outline-none bg-black text-white p-4"
+          className="outline-none bg-black text-white w-full p-4"
           ref={textInputRef}
           onKeyUp={(ev) => {
             if (ev.key !== 'Enter') return;

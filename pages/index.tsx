@@ -20,7 +20,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="p-8 text-white h-screen">
+    <div className="p-8 text-white h-screen flex flex-col">
       <div className="flex justify-between items-center">
         <span className="text-xl font-bold">Isotope</span>
         <div className="flex items-center">
@@ -29,7 +29,7 @@ export default function Home() {
         </div>
       </div>
       <hr className="my-4" />
-      <div className="grid grid-cols-5 gap-8">
+      <div className="grid grid-cols-5 gap-x-8 h-full">
         <div className="col-span-1"><ChatRooms /></div>
         <div className="col-span-4"><ChatArea /></div>
       </div>
