@@ -1,6 +1,7 @@
 import { create } from "ipfs-http-client";
 import { useRef, useState } from "react"
 import { useIPFS } from "../hooks/zustand";
+import { toast } from "react-toastify";
 
 export default function Config() {
   const [saveState, setSaveState] = useState(false);
@@ -13,6 +14,8 @@ export default function Config() {
       .then(() => {
         useIPFS.setState((state) => ({ ipfs: create({ url: state.apiAddr }) }))
       })
+    toast('Saved config');
+    setSaveState(false);
   }
 
   return (
@@ -29,7 +32,7 @@ export default function Config() {
           ref={ipfsAPIRef} />
       </div>
       <div className="mt-4 flex justify-end">
-        <button onClick={() => { setSaveState(false) }} className={`font-medium transition-colors p-2 ${saveState ? 'outline-dashed outline-yellow-500 bg-yellow-800 hover:bg-yellow-600' : 'outline outline-white hover:bg-zinc-800'}`}>Save</button>
+        <button onClick={saveConfig} className={`font-medium transition-colors p-2 ${saveState ? 'outline-dashed outline-yellow-500 bg-yellow-800 hover:bg-yellow-600' : 'outline outline-white hover:bg-zinc-800'}`}>Save</button>
       </div>
     </div>
   )
