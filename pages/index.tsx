@@ -16,6 +16,7 @@ export default function Home() {
   useEffect(() => {
     if (!accounts[0]) return;
     useIPFS.setState({ ipfs: create({ url: useIPFS.getState().apiAddr }) })
+    console.log(useAccounts.getState().publicKey)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -5,9 +5,8 @@ import Router from 'next/router';
 import { toast } from 'react-toastify';
 
 export default function Signin() {
-  const ethereum = (window as any).ethereum;
-
   const metamaskLogin = () => {
+    const ethereum = (window as any).ethereum;
     if (!ethereum) {
       toast.error('Could not detect metamask.')
       return;
@@ -15,16 +14,11 @@ export default function Signin() {
     ethereum.request({method: 'eth_requestAccounts', })
       .then(() => ethereum.request({method: 'eth_accounts'}))
       .then((accounts: string[]) => { useAccounts.setState({ accounts }) })
+      .then(() => ethereum.request({ method: 'eth_getEncryptionPublicKey', params: [useAccounts.getState().accounts[0]]}))
+      .then((publicKey: string) => { useAccounts.setState({ publicKey }) } )
       .then(() => Router.push('/'))
       .catch((e: any) => toast.error(e.toString()))
   }
-
-  if (Router.query.reason === 'no_address') toast.error(
-    <div>
-      <span>Sign in to continue.</span> <br />
-      <span className="text-zinc-600" >{Intl.DateTimeFormat(navigator.language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date())}</span>
-    </div>
-  );
 
   return (
     <div className='mx-auto max-w-screen-md flex flex-col justify-center items-center border-white border rounded-lg p-8 w-full'>

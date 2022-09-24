@@ -2,6 +2,7 @@ import type { IPFSHTTPClient } from 'ipfs-http-client/dist/src/types';
 
 interface Accounts {
   accounts: string[],
+  publicKey: any,
 }
 
 interface ChatRooms {

@@ -3,6 +3,7 @@ import { Accounts, ChatRooms, IPFSNode } from '../types/states';
 
 const useAccounts = create<Accounts>((set) => ({
   accounts: [],
+  publicKey: undefined,
 }))
 
 const useChatRooms = create<ChatRooms>((set) => ({

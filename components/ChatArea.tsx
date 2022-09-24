@@ -3,11 +3,13 @@ import { useAccounts, useChatRooms, useIPFS } from "../hooks/zustand";
 import BlankSlate from "./Blankslate";
 import { Message } from '@libp2p/interface-pubsub';
 import { toast } from "react-toastify";
+import { encryptMessage } from "../utils/ethereum";
 
 export default function ChatArea() {
   const ipfs = useIPFS((state) => state.ipfs);
   const selectedChat = useChatRooms((state) => state.selected)
   const accounts = useAccounts((state) => state.accounts);
+  const publicKey = useAccounts((state) => state.publicKey)
   const [subscribeStatus, setSubscribeStatus] = useState<boolean | Error>(false);
   const [messages, setMessages] = useState<string[]>([]);
   const textInputRef = useRef(null);
@@ -63,7 +65,7 @@ export default function ChatArea() {
           onKeyUp={(ev) => {
             if (ev.key !== 'Enter') return;
             if (!textInputRef.current.value) return;
-            ipfs.pubsub.publish(selectedChat, new TextEncoder().encode(textInputRef.current.value))
+            ipfs.pubsub.publish(selectedChat, new TextEncoder().encode(JSON.stringify(encryptMessage(publicKey, textInputRef.current.value))))
             textInputRef.current.value = '';
           }}
           type="text"
