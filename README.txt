@@ -1,5 +1,5 @@
 funny chat app
 
-not accepting pull requests
+maybe accepting pull requests :thinking:
 
 All rights reserved :trollface:
