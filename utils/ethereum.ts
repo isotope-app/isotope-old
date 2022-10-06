@@ -20,7 +20,7 @@ handleSignMessage = ({ publicAddress, nonce }) => {
 // function authenticate(address: string) {
 // }
 
-function signMessage(publicKey: string, message: string) {
+function encryptMessage(publicKey: string, message: string) {
   return sigUtil.encrypt({
     publicKey,
     data: message,
@@ -31,4 +31,4 @@ function signMessage(publicKey: string, message: string) {
 
 // eth_decrypt to decrypt
 
-export { signMessage };
+export { encryptMessage };
