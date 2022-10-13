@@ -37,7 +37,11 @@ export default function ChatArea() {
   }, [ipfs, selectedChat, messages])
 
   useEffect(() => {
+    if (!ipfs) return;
     console.log(`Subscribed to topic: ${subscribeStatus.toString()}`)
+    ipfs.swarm.addrs().then((info) => {
+      console.log(info)
+    })
   }, [subscribeStatus])
 
   if (accounts.length === 0) return (<BlankSlate title="Not logged in." body="Redirecting to sign in page..." />)

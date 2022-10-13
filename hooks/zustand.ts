@@ -15,7 +15,7 @@ const useChatRooms = create<ChatRooms>((set) => ({
 
 const useIPFS = create<IPFSNode>((set) => ({
   ipfs: undefined,
-  apiAddr: 'http://127.0.0.1:5002/',
+  apiAddr: 'http://127.0.0.1:5001/',
 }))
 
 export { useAccounts, useChatRooms, useIPFS };

@@ -27,7 +27,7 @@ export default function Config() {
         <input
           type="url"
           className="p-2 outline transition-colors dark:bg-black dark:hover:bg-zinc-800 dark:outline-white invalid:outline-dashed invalid:outline-red-600 invalid:bg-red-900"
-          placeholder="http://127.0.0.1:5002/"
+          placeholder="http://127.0.0.1:5001/"
           onInput={() => { setSaveState(true) }}
           ref={ipfsAPIRef} />
       </div>
