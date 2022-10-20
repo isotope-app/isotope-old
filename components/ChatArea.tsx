@@ -31,11 +31,7 @@ export default function ChatArea() {
         decodedMessage.members.forEach((member: string) => {
           if (members.includes(member)) return;
           setMembers((old) => [...old, member]);
-        })
-        if (decodedMessage.members.length >= members.length) {
-          setMembers(decodedMessage.members);
-          setMessages((old) => [...old, `${members.join(', ')} are in this room.`]);
-        }
+        });
         break;
       case 'message':
         setMessages((old) => [...old, `${decodedMessage.author}: ${JSON.stringify(decodedMessage.content)}`]);
