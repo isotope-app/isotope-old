@@ -10,11 +10,8 @@ export default function Config() {
   const saveConfig = () => {
     if (!ipfsAPIRef || !ipfsAPIRef.current.validity) return;
     useIPFS.setState({ apiAddr: ipfsAPIRef.current.value });
-    useIPFS.getState().ipfs.stop()
-      .then(() => {
-        useIPFS.setState((state) => ({ ipfs: create({ url: state.apiAddr }) }))
-      })
-    toast('Saved config');
+    useIPFS.setState((state) => ({ ipfs: create({ url: state.apiAddr }) }))
+    toast('Saved Config');
     setSaveState(false);
   }
 
@@ -23,7 +20,7 @@ export default function Config() {
       <h1 className="font-bold italic text-3xl">IPFS Config</h1>
       <hr className="my-4 border-none outline" />
       <div className="flex flex-col">
-        <span className="font-medium italic mb-4"><a href="https://github.com/ipfs/js-ipfs/tree/master/packages/ipfs-http-server" className="underline cursor-pointer">ipfs-http-server</a> API address:</span>
+        <span className="font-medium italic mb-4"><a href="https://github.com/ipfs/kubo" className="underline cursor-pointer">kubo</a> API address:</span>
         <input
           type="url"
           className="p-2 outline transition-colors dark:bg-black dark:hover:bg-zinc-800 dark:outline-white invalid:outline-dashed invalid:outline-red-600 invalid:bg-red-900"
