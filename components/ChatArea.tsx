@@ -15,22 +15,25 @@ export default function ChatArea() {
   const [members, setMembers] = useState<string[]>([accounts[0]]);
   const textInputRef = useRef(null);
 
-  const sendMessage = (event: string, content: any) => {
-    ipfs.pubsub.publish(selectedChat, new TextEncoder().encode(JSON.stringify({ event: 'message', ...content })))
+  const sendMessage = (content: any) => {
+    ipfs.pubsub.publish(selectedChat, new TextEncoder().encode(JSON.stringify(content)))
   }
 
   const onReceieve = (msg: Message) => {
     const decodedMessage = JSON.parse(new TextDecoder().decode(msg.data));
     switch (decodedMessage.event) {
       case 'join':
-        sendMessage('members', { members })
+        sendMessage({ event: 'members', members })
         setMessages([...messages, `${decodedMessage.address} with public key ${decodedMessage.publicKey} has joined.`]);
         break;
       case 'members':
         if (decodedMessage.members.length >= members.length) {
           setMembers(decodedMessage.members);
+          setMessages([...messages, `${members.join(', ')} are in this room.`]);
         }
         break;
+      case 'message':
+        setMessages([...messages, `${decodedMessage.author}: ${decodedMessage.content}`]);
       default:
         break;
     }
@@ -40,7 +43,7 @@ export default function ChatArea() {
     if (ev.key !== 'Enter') return;
     if (!textInputRef.current.value) return;
     textInputRef.current.value = '';
-    sendMessage('message', { content: encryptMessage(publicKey, textInputRef.current.value) })
+    sendMessage({ event: 'message', author: accounts[0], content: encryptMessage(publicKey, textInputRef.current.value) })
   }
 
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function ChatArea() {
     ipfs.pubsub.subscribe(selectedChat, onReceieve)
       .then(() => {
         setSubscribeStatus(true);
-        sendMessage('join', { publicKey, address: accounts[0] })
+        sendMessage({ event: 'join', publicKey, address: accounts[0] })
       })
       .catch((e: any) => {
         setSubscribeStatus((e as Error));
@@ -66,7 +69,7 @@ export default function ChatArea() {
         );
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ipfs, selectedChat])
+  }, [ipfs, selectedChat]);
 
   if (accounts.length === 0) return (<BlankSlate title="Not logged in." body="Redirecting to sign in page..." />)
   if (!ipfs) return (<BlankSlate title="IPFS is loading" body="Please wait..." />)
