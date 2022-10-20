@@ -12,7 +12,7 @@ export default function ChatArea() {
   const publicKey = useAccounts((state) => state.publicKey)
   const [subscribeStatus, setSubscribeStatus] = useState<boolean | Error>(false);
   const [messages, setMessages] = useState<any[]>([]);
-  const [members, setMembers] = useState<string[]>([accounts[0]]);
+  const [members, setMembers] = useState<{ address: string, publicKey: string }[]>([{ address: accounts[0], publicKey }]);
   const textInputRef = useRef(null);
 
   const sendMessage = (content: any) => {
@@ -28,9 +28,9 @@ export default function ChatArea() {
         setMessages((old) => [...old, `${decodedMessage.address} with public key ${decodedMessage.publicKey} has joined.`]);
         break;
       case 'members':
-        decodedMessage.members.forEach((member: string) => {
-          if (members.includes(member)) return;
-          setMembers((old) => [...old, member]);
+        decodedMessage.members.forEach((address: string, publicKey: string) => {
+          if (members.map((m) => m.address).includes(address)) return;
+          setMembers((old) => [...old, { address, publicKey }]);
           sendMessage({ event: 'members', members })
         });
         break;
@@ -45,7 +45,11 @@ export default function ChatArea() {
     if (ev.key !== 'Enter') return;
     if (!textInputRef.current.value) return;
     textInputRef.current.value = '';
-    sendMessage({ event: 'message', author: accounts[0], content: encryptMessage(publicKey, textInputRef.current.value) })
+    let encryptedMessages = [];
+    members.forEach((m) => {
+      encryptedMessages.push(encryptMessage(m.publicKey, textInputRef.current.value));
+    })
+    sendMessage({ event: 'message', author: accounts[0], content: encryptedMessages })
   }
 
   useEffect(() => {
