@@ -23,6 +23,7 @@ export default function ChatArea() {
     const decodedMessage = JSON.parse(new TextDecoder().decode(msg.data));
     switch (decodedMessage.event) {
       case 'join':
+        if (decodedMessage.address === accounts[0]) break;
         sendMessage({ event: 'members', members })
         setMessages([...messages, `${decodedMessage.address} with public key ${decodedMessage.publicKey} has joined.`]);
         break;
@@ -33,7 +34,7 @@ export default function ChatArea() {
         }
         break;
       case 'message':
-        setMessages([...messages, `${decodedMessage.author}: ${decodedMessage.content}`]);
+        setMessages([...messages, `${decodedMessage.author}: ${JSON.stringify(decodedMessage.content)}`]);
       default:
         break;
     }
@@ -70,6 +71,10 @@ export default function ChatArea() {
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipfs, selectedChat]);
+
+  useEffect(() => {
+    console.log(members);
+  }, [members])
 
   if (accounts.length === 0) return (<BlankSlate title="Not logged in." body="Redirecting to sign in page..." />)
   if (!ipfs) return (<BlankSlate title="IPFS is loading" body="Please wait..." />)
