@@ -31,7 +31,6 @@ export default function ChatArea() {
         decodedMessage.members.forEach((address: string, publicKey: string) => {
           if (members.map((m) => m.address).includes(address)) return;
           setMembers((old) => [...old, { address, publicKey }]);
-          sendMessage({ event: 'members', members })
         });
         break;
       case 'message':
