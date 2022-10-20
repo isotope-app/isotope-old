@@ -25,16 +25,20 @@ export default function ChatArea() {
       case 'join':
         if (decodedMessage.address === accounts[0]) break;
         sendMessage({ event: 'members', members })
-        setMessages([...messages, `${decodedMessage.address} with public key ${decodedMessage.publicKey} has joined.`]);
+        setMessages((old) => [...old, `${decodedMessage.address} with public key ${decodedMessage.publicKey} has joined.`]);
         break;
       case 'members':
+        decodedMessage.members.forEach((member: string) => {
+          if (members.includes(member)) return;
+          setMembers((old) => [...old, member]);
+        })
         if (decodedMessage.members.length >= members.length) {
           setMembers(decodedMessage.members);
-          setMessages([...messages, `${members.join(', ')} are in this room.`]);
+          setMessages((old) => [...old, `${members.join(', ')} are in this room.`]);
         }
         break;
       case 'message':
-        setMessages([...messages, `${decodedMessage.author}: ${JSON.stringify(decodedMessage.content)}`]);
+        setMessages((old) => [...old, `${decodedMessage.author}: ${JSON.stringify(decodedMessage.content)}`]);
       default:
         break;
     }
