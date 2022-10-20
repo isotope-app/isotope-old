@@ -4,6 +4,7 @@ import BlankSlate from "./Blankslate";
 import { Message } from '@libp2p/interface-pubsub';
 import { toast } from "react-toastify";
 import { encryptMessage } from "../utils/ethereum";
+import type { JoinMessage, MemberMessage, TextMessage } from "../types/message";
 
 export default function ChatArea() {
   const ipfs = useIPFS((state) => state.ipfs);
@@ -11,7 +12,7 @@ export default function ChatArea() {
   const accounts = useAccounts((state) => state.accounts);
   const publicKey = useAccounts((state) => state.publicKey)
   const [subscribeStatus, setSubscribeStatus] = useState<boolean | Error>(false);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<string[]>([]);
   const [members, setMembers] = useState<{ address: string, publicKey: string }[]>([{ address: accounts[0], publicKey }]);
   const textInputRef = useRef(null);
 
@@ -20,7 +21,7 @@ export default function ChatArea() {
   }
 
   const onReceieve = (msg: Message) => {
-    const decodedMessage = JSON.parse(new TextDecoder().decode(msg.data));
+    const decodedMessage: TextMessage | JoinMessage | MemberMessage = JSON.parse(new TextDecoder().decode(msg.data));
     switch (decodedMessage.event) {
       case 'join':
         if (decodedMessage.address === accounts[0]) break;
@@ -28,9 +29,9 @@ export default function ChatArea() {
         setMessages((old) => [...old, `${decodedMessage.address} with public key ${decodedMessage.publicKey} has joined.`]);
         break;
       case 'members':
-        decodedMessage.members.forEach((address: string, publicKey: string) => {
-          if (members.map((m) => m.address).includes(address)) return;
-          setMembers((old) => [...old, { address, publicKey }]);
+        decodedMessage.members.forEach((member) => {
+          if (members.map((m) => m.address).includes(member.address)) return;
+          setMembers((old) => [...old, { address: member.address, publicKey }]);
         });
         break;
       case 'message':
@@ -46,7 +47,7 @@ export default function ChatArea() {
     textInputRef.current.value = '';
     let encryptedMessages = [];
     members.forEach((m) => {
-      encryptedMessages.push(encryptMessage(m.publicKey, textInputRef.current.value));
+      encryptedMessages.push([m.address, encryptMessage(m.publicKey, textInputRef.current.value)]);
     })
     sendMessage({ event: 'message', author: accounts[0], content: encryptedMessages })
   }
