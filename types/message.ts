@@ -1,3 +1,5 @@
+import type { EthEncryptedData } from '@metamask/eth-sig-util';
+
 interface JoinMessage {
   event: 'join',
   publicKey: string,
@@ -7,11 +9,12 @@ interface JoinMessage {
 type Member = { address: string, publicKey: string };
 
 interface MemberMessage {
-  event: 'members',
-  members: Member[],
+  event: 'member',
+  publicKey: string,
+  address: string,
 }
 
-type EncryptedMessage = { address: string, message: string };
+type EncryptedMessage = { address: string, message: EthEncryptedData };
 
 interface TextMessage {
   event: 'message',

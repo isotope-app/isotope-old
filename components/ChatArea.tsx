@@ -4,7 +4,7 @@ import BlankSlate from "./Blankslate";
 import { Message } from '@libp2p/interface-pubsub';
 import { toast } from "react-toastify";
 import { encryptMessage } from "../utils/ethereum";
-import type { JoinMessage, MemberMessage, TextMessage } from "../types/message";
+import type { EncryptedMessage, JoinMessage, MemberMessage, TextMessage } from "../types/message";
 
 export default function ChatArea() {
   const ipfs = useIPFS((state) => state.ipfs);
@@ -13,10 +13,10 @@ export default function ChatArea() {
   const publicKey = useAccounts((state) => state.publicKey)
   const [subscribeStatus, setSubscribeStatus] = useState<boolean | Error>(false);
   const [messages, setMessages] = useState<string[]>([]);
-  const [members, setMembers] = useState<{ address: string, publicKey: string }[]>([{ address: accounts[0], publicKey }]);
+  const [members, setMembers] = useState<{ address: string, publicKey: string }[]>([]);
   const textInputRef = useRef(null);
 
-  const sendMessage = (content: any) => {
+  const sendMessage = (content: TextMessage | JoinMessage | MemberMessage) => {
     ipfs.pubsub.publish(selectedChat, new TextEncoder().encode(JSON.stringify(content)))
   }
 
@@ -24,15 +24,11 @@ export default function ChatArea() {
     const decodedMessage: TextMessage | JoinMessage | MemberMessage = JSON.parse(new TextDecoder().decode(msg.data));
     switch (decodedMessage.event) {
       case 'join':
-        if (decodedMessage.address === accounts[0]) break;
-        sendMessage({ event: 'members', members })
-        setMessages((old) => [...old, `${decodedMessage.address} with public key ${decodedMessage.publicKey} has joined.`]);
+        sendMessage({ event: 'member', address: accounts[0], publicKey })
+        setMessages((old) => [...old, `${decodedMessage.address} has joined.`]);
         break;
-      case 'members':
-        decodedMessage.members.forEach((member) => {
-          if (members.map((m) => m.address).includes(member.address)) return;
-          setMembers((old) => [...old, { address: member.address, publicKey }]);
-        });
+      case 'member':
+        setMembers((old) => [...old, { address: decodedMessage.address, publicKey: decodedMessage.publicKey }])
         break;
       case 'message':
         setMessages((old) => [...old, `${decodedMessage.author}: ${JSON.stringify(decodedMessage.content)}`]);
@@ -45,9 +41,9 @@ export default function ChatArea() {
     if (ev.key !== 'Enter') return;
     if (!textInputRef.current.value) return;
     textInputRef.current.value = '';
-    let encryptedMessages = [];
+    let encryptedMessages: EncryptedMessage[] = [];
     members.forEach((m) => {
-      encryptedMessages.push([m.address, encryptMessage(m.publicKey, textInputRef.current.value)]);
+      encryptedMessages.push({ address: m.address, message: encryptMessage(m.publicKey, textInputRef.current.value) });
     })
     sendMessage({ event: 'message', author: accounts[0], content: encryptedMessages })
   }
@@ -93,9 +89,10 @@ export default function ChatArea() {
         <h3 className="text-2xl font-medium text-center">{selectedChat}</h3>
         <div className="flex flex-col">
           {messages.map((m, index) => (
-            <span key={`message-${index}`}>
-              {m} {Intl.DateTimeFormat(navigator.language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date())}
-            </span>
+            <div key={`message-${index}`} className="flex items-baseline">
+              <span className="text-zinc-600 text-sm mr-2">{Intl.DateTimeFormat(navigator.language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date())}</span>
+              <span>{m}</span>
+            </div>
           ))}
         </div>
       </div>
