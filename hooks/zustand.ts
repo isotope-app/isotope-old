@@ -1,5 +1,5 @@
 import create from 'zustand'
-import { Accounts, ChatRooms, IPFSNode } from '../types/states';
+import { Accounts, ChatRooms, EthereumProvider, IPFSNode } from '../types/states';
 
 const useAccounts = create<Accounts>((set) => ({
   accounts: [],
@@ -18,4 +18,8 @@ const useIPFS = create<IPFSNode>((set) => ({
   apiAddr: 'http://127.0.0.1:5001/',
 }))
 
-export { useAccounts, useChatRooms, useIPFS };
+const useEthereum = create<EthereumProvider>((set) => ({
+  ethereum: undefined,
+}))
+
+export { useAccounts, useChatRooms, useIPFS, useEthereum };

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import metamaskIcon from '../public/metamask-fox.svg'
-import { useAccounts } from '../hooks/zustand';
+import { useAccounts, useEthereum } from '../hooks/zustand';
 import Router from 'next/router';
 import { toast } from 'react-toastify';
 
@@ -11,11 +11,12 @@ export default function Signin() {
       toast.error('Could not detect metamask.')
       return;
     }
-    ethereum.request({method: 'eth_requestAccounts', })
-      .then(() => ethereum.request({method: 'eth_accounts'}))
+    useEthereum.setState({ ethereum });
+    ethereum.request({ method: 'eth_requestAccounts' })
+      .then(() => ethereum.request({ method: 'eth_accounts' }))
       .then((accounts: string[]) => { useAccounts.setState({ accounts }) })
-      .then(() => ethereum.request({ method: 'eth_getEncryptionPublicKey', params: [useAccounts.getState().accounts[0]]}))
-      .then((publicKey: string) => { useAccounts.setState({ publicKey }) } )
+      .then(() => ethereum.request({ method: 'eth_getEncryptionPublicKey', params: [useAccounts.getState().accounts[0]] }))
+      .then((publicKey: string) => { useAccounts.setState({ publicKey }) })
       .then(() => Router.push('/'))
       .catch((e: any) => toast.error(e.toString()))
   }

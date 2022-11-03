@@ -1,16 +1,17 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
-import { useAccounts, useChatRooms, useIPFS } from "../hooks/zustand";
+import { useAccounts, useChatRooms, useEthereum, useIPFS } from "../hooks/zustand";
 import BlankSlate from "./Blankslate";
 import { Message } from '@libp2p/interface-pubsub';
 import { toast } from "react-toastify";
-import { encryptMessage } from "../utils/ethereum";
+import { decryptMessage, encryptMessage } from "../utils/ethereum";
 import type { EncryptedMessage, JoinMessage, MemberMessage, TextMessage } from "../types/message";
 
 export default function ChatArea() {
   const ipfs = useIPFS((state) => state.ipfs);
-  const selectedChat = useChatRooms((state) => state.selected)
+  const selectedChat = useChatRooms((state) => state.selected);
   const accounts = useAccounts((state) => state.accounts);
-  const publicKey = useAccounts((state) => state.publicKey)
+  const publicKey = useAccounts((state) => state.publicKey);
+  const ethereum = useEthereum((state) => state.ethereum);
   const [subscribeStatus, setSubscribeStatus] = useState<boolean | Error>(false);
   const [messages, setMessages] = useState<string[]>([]);
   const [members, setMembers] = useState<{ address: string, publicKey: string }[]>([]);
@@ -30,8 +31,12 @@ export default function ChatArea() {
       case 'member':
         setMembers((old) => [...old, { address: decodedMessage.address, publicKey: decodedMessage.publicKey }])
         break;
-      case 'message':
-        setMessages((old) => [...old, `${decodedMessage.author}: ${JSON.stringify(decodedMessage.content)}`]);
+      case 'message': {
+        decryptMessage(ethereum, decodedMessage.content.find((message) => message.address === accounts[0]).message, accounts[0])
+          .then((decryptedMessage: string) => {
+            setMessages((old) => [...old, `${decodedMessage.author}: ${decryptedMessage}`])
+          })
+      }
       default:
         break;
     }
@@ -40,12 +45,12 @@ export default function ChatArea() {
   const onSend = (ev: KeyboardEvent<HTMLInputElement>) => {
     if (ev.key !== 'Enter') return;
     if (!textInputRef.current.value) return;
-    textInputRef.current.value = '';
     let encryptedMessages: EncryptedMessage[] = [];
     members.forEach((m) => {
       encryptedMessages.push({ address: m.address, message: encryptMessage(m.publicKey, textInputRef.current.value) });
     })
-    sendMessage({ event: 'message', author: accounts[0], content: encryptedMessages })
+    sendMessage({ event: 'message', author: accounts[0], content: encryptedMessages });
+    textInputRef.current.value = '';
   }
 
   useEffect(() => {

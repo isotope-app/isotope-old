@@ -17,4 +17,8 @@ interface IPFSNode {
   apiAddr: string,
 }
 
-export type { Accounts, ChatRooms, IPFSNode };
+interface EthereumProvider {
+  ethereum: any
+}
+
+export type { Accounts, ChatRooms, IPFSNode, EthereumProvider };

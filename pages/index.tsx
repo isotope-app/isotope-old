@@ -10,7 +10,7 @@ export default function Home() {
   const accounts = useAccounts((state) => state.accounts)
 
   useEffect(() => {
-    if (!accounts[0]) Router.push('/signin?reason=no_address')
+    if (!accounts[0]) Router.push('/signin')
   }, [accounts])
 
   useEffect(() => {
