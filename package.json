@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@metamask/eth-sig-util": "^5.0.0",
-    "eth-sig-util": "^3.0.1",
-    "ethers": "^5.7.2",
     "ipfs-http-client": "^58.0.1",
     "next": "12.3.0",
     "react": "18.2.0",

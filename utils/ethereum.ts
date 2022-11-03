@@ -1,6 +1,4 @@
-// import * as sigUtil from '@metamask/eth-sig-util'
-import { encrypt } from 'eth-sig-util';
-import { ethers } from 'ethers';
+import * as sigUtil from '@metamask/eth-sig-util';
 // import { randomUUID } from 'crypto';
 
 /*
@@ -22,23 +20,16 @@ handleSignMessage = ({ publicAddress, nonce }) => {
 // }
 
 function encryptMessage(encryptionKey: string, message: string) {
-  return ethers.utils.hexlify(
-    Buffer.from(
-      JSON.stringify(
-        // sigUtil.encrypt({
-        //   publicKey,
-        //   data: message,
-        //   // https://github.com/MetaMask/eth-sig-util/blob/v4.0.0/src/encryption.ts#L40
-        //   version: "x25519-xsalsa20-poly1305"
-        // })
-        encrypt(
-          encryptionKey,
-          { data: message },
-          'x25519-xsalsa20-poly1305',
-        ),
-      )
+  return Buffer.from(
+    JSON.stringify(
+      sigUtil.encrypt({
+        publicKey: encryptionKey,
+        data: message,
+        // https://github.com/MetaMask/eth-sig-util/blob/v4.0.0/src/encryption.ts#L40
+        version: "x25519-xsalsa20-poly1305"
+      })
     )
-  )
+  ).toString('hex')
 }
 
 function decryptMessage(ethereum: any, message: string, address: string) {
