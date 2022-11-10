@@ -1,5 +1,3 @@
-# Isotope
-
 <div align="center"><b><i>A peer to peer messaging app built using web3 technology.</i></b></div>
 
 ## About
@@ -29,7 +27,7 @@ IPFS.
 
 |     ![pubsub figure](https://docs.libp2p.io/concepts/assets/publish-subscribe/subscribed_peers.png)     |
 | :-----------------------------------------------------------------------------------------------------: |
-| _Some peers subscribed to a common topic .[source](https://docs.libp2p.io/concepts/publish-subscribe/)_ |
+| _Some peers subscribed to a common topic. [source](https://docs.libp2p.io/concepts/publish-subscribe/)_ |
 
 When someone sends a message, it is published to the IPFS network, and then
 every node that is subscribed to that topic will receive the message.
