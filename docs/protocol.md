@@ -58,9 +58,9 @@ to store the MAC.
 
 ```
 ---
-publicKey:  string
-signature:  string
-verify:     string
+  publicKey:  string
+  signature:  string
+  verify:     string
 ---
 ```
 
