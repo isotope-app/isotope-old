@@ -22,7 +22,7 @@ In that chatroom, every message sent will be encrypted using the encryption key
 of every one else that is in the room. They will be able to find the message
 that was encrypted using their key, and then decrypt and read the message.
 
-More information about the protocol can be found [here](https://isotope.not-ivy.dev/protocol.md)
+More information about the protocol can be found [here](https://isotope.not-ivy.dev/protocol).
 
 This is made possible using the _Publish/Subscribe_, aka the pubsub feature of
 IPFS.
